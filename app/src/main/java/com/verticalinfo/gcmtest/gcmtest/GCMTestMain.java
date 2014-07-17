@@ -26,7 +26,7 @@ public class GCMTestMain extends Activity {
     EditText etRegId;
     GoogleCloudMessaging gcm;
     String regid;
-    String PROJECT_NUMBER = "strange-wharf-635";
+    String PROJECT_NUMBER = "313979587337";
     SharedPreferences prefs;
 
     @Override
