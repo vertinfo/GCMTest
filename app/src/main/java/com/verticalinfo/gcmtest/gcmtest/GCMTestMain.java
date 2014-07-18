@@ -29,6 +29,7 @@ public class GCMTestMain extends Activity {
     String regid;
     String PROJECT_NUMBER = "313979587337";
     SharedPreferences prefs;
+    Context context;
 
     @Override
     protected void onStart(){
@@ -41,6 +42,7 @@ public class GCMTestMain extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gcmtest_main);
 
+        context = this;
         btnRegId = (Button) findViewById(R.id.regid);
         etRegId = (EditText) findViewById(R.id.txtid);
 
@@ -78,6 +80,7 @@ public class GCMTestMain extends Activity {
             @Override
             protected void onPostExecute(String msg) {
                 etRegId.setText(msg + "\n");
+                storeRegistrationId(context, regid);
             }
         }.execute(null, null, null);
     }
