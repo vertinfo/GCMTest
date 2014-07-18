@@ -1,6 +1,7 @@
 package com.verticalinfo.gcmtest.gcmtest;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -28,6 +29,12 @@ public class GCMTestMain extends Activity {
     String regid;
     String PROJECT_NUMBER = "313979587337";
     SharedPreferences prefs;
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

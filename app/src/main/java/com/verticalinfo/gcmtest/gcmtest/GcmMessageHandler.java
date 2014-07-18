@@ -1,9 +1,16 @@
 package com.verticalinfo.gcmtest.gcmtest;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,6 +23,9 @@ public class GcmMessageHandler extends IntentService {
 
     String mes;
     private Handler handler;
+    public static final int NOTIFICATION_ID = 1;
+    private NotificationManager mNotificationManager;
+    NotificationCompat.Builder builder;
     public GcmMessageHandler() {
         super("GcmMessageHandler");
     }
@@ -35,10 +45,10 @@ public class GcmMessageHandler extends IntentService {
             // in your BroadcastReceiver.
             String messageType = gcm.getMessageType(intent);
 
-            mes = extras.getString("title");
-            showToast();
-            Log.i("GCM", "Received : (" + messageType + ")  " + extras.getString("title"));
-
+            mes = extras.getString("message");
+            //showToast();
+           // Log.i("GCM", "Received : (" + messageType + ")  " + extras.getString("message"));
+            sendNotification("Received: " + mes);
             GcmBroadcastReceiver.completeWakefulIntent(intent);
 
         }
@@ -51,4 +61,29 @@ public class GcmMessageHandler extends IntentService {
             });
 
         }
+
+    // Put the message into a notification and post it.
+    // This is just one simple example of what you might choose to do with
+    // a GCM message.
+    private void sendNotification(String msg) {
+        mNotificationManager = (NotificationManager)
+                this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, GCMTestMain.class), 0);
+
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.powered_by_google_light)
+                        .setContentTitle("GCM Notification")
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(msg))
+                        .setSound(alarmSound)
+                        .setAutoCancel(true)
+                        .setContentText(msg);
+
+        mBuilder.setContentIntent(contentIntent);
+        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+    }
 }
